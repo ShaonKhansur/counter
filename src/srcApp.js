@@ -1,49 +1,42 @@
-const template =(
+let items = ["hi", "hello", "Hola"];
+
+const handleFormSubmit = e => {
+  e.preventDefault();
+  const val = e.target.elements.task.value;
+
+  if (val) {
+    items.push(val);
+    e.target.elements.task.value = "";
+    render();
+  }
+};
+
+
+const handleClear = () => {
+  items = [];
+  render();
+};
+
+const render = () => {
+  const template = (
     <div>
-            <h1>Hello world</h1>
-            <p>Paragraph</p>
-    
+      <h1>App Title</h1>
+
+      <ol>
+        {items.map(item => (
+          <li key={item}>{item}</li>
+        ))}
+      </ol>
+
+      <button onClick={handleClear} disabled = {items.length === 0 ? true: false}>Clear</button>
+      <form onSubmit={handleFormSubmit}>
+        <input type="text" name="task" />
+        <button>addItem</button>
+      </form>
     </div>
-    
-)
+  );
 
-let count =0;
-
-const addOne = () =>{
-    count++;
-    console.log("added one", count);
-    render();
-}
-
-const subOne = () =>{
-    count--;
-    console.log("subtracted one", count);
-    render();
-}
-const reset = () =>{
-     count = 0;
-     console.log("reseted", count);
-     render();
-}
-const render = () =>{
-
-
-    const counterTemplate = (
-        <div>
-            <h1 id="counter">{count}</h1>
-            <button onClick = {addOne}>+1</button>
-            <button onClick = {subOne}>-1</button>
-            <button onClick = {reset}>Reset</button>
-        </div>
-    
-    
-    )
-    
-    const myApp = document.querySelector("#my-app");
-    
-    ReactDOM.render(counterTemplate, myApp);
-}
+  const myApp = document.querySelector("#my-app");
+  ReactDOM.render(template, myApp);
+};
 render();
-
-
-

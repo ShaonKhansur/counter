@@ -1,67 +1,61 @@
 "use strict";
 
-var template = React.createElement(
+var items = ["hi", "hello", "Hola"];
+
+var handleFormSubmit = function handleFormSubmit(e) {
+  e.preventDefault();
+  var val = e.target.elements.task.value;
+
+  if (val) {
+    items.push(val);
+    e.target.elements.task.value = "";
+    render();
+  }
+};
+
+var handleClear = function handleClear() {
+  items = [];
+  render();
+};
+
+var render = function render() {
+  var template = React.createElement(
     "div",
     null,
     React.createElement(
-        "h1",
-        null,
-        "Hello world"
+      "h1",
+      null,
+      "App Title"
     ),
     React.createElement(
-        "p",
+      "ol",
+      null,
+      items.map(function (item) {
+        return React.createElement(
+          "li",
+          { key: item },
+          item
+        );
+      })
+    ),
+    React.createElement(
+      "button",
+      { onClick: handleClear, disabled: items.length === 0 ? true : false },
+      "Clear"
+    ),
+    React.createElement(
+      "form",
+      { onSubmit: handleFormSubmit },
+      React.createElement("input", { type: "text", name: "task" }),
+      React.createElement(
+        "button",
         null,
-        "Paragraph"
+        "addItem"
+      )
     )
-);
+  );
 
-var count = 0;
-
-var addOne = function addOne() {
-    count++;
-    console.log("added one", count);
-    render();
-};
-
-var subOne = function subOne() {
-    count--;
-    console.log("subtracted one", count);
-    render();
-};
-var reset = function reset() {
-    count = 0;
-    console.log("reseted", count);
-    render();
-};
-var render = function render() {
-
-    var counterTemplate = React.createElement(
-        "div",
-        null,
-        React.createElement(
-            "h1",
-            { id: "counter" },
-            count
-        ),
-        React.createElement(
-            "button",
-            { onClick: addOne },
-            "+1"
-        ),
-        React.createElement(
-            "button",
-            { onClick: subOne },
-            "-1"
-        ),
-        React.createElement(
-            "button",
-            { onClick: reset },
-            "Reset"
-        )
-    );
-
-    var myApp = document.querySelector("#my-app");
-
-    ReactDOM.render(counterTemplate, myApp);
+  var myApp = document.querySelector("#my-app");
+  ReactDOM.render(template, myApp);
 };
 render();
